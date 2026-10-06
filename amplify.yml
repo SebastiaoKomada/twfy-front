@@ -1,0 +1,19 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - nvm install 22
+        - nvm use 22
+        - npm ci --cache .npm --prefer-offline
+        - node -e "const u = new URL(process.env.VITE_API_URL || ''); if (u.protocol !== 'https:' || u.pathname !== '/' || u.search || u.hash || u.username || u.password) { throw new Error('Defina VITE_API_URL com a origem HTTPS da API, sem /api'); }"
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: dist
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - .npm/**/*

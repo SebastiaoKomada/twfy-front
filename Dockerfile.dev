@@ -1,0 +1,14 @@
+# Imagem só para rodar o Vite em modo dev localmente via docker-compose
+# (--profile dev). Em produção o frontend não roda em container: o build
+# estático é publicado diretamente no Amplify Hosting.
+FROM node:22-slim
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm install
+
+COPY . .
+
+EXPOSE 5173
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
